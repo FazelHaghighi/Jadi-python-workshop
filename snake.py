@@ -23,11 +23,19 @@ def food_position():
 food = food_position()
 
 def is_dead(snake):
-    if snake[0][0] < 0 or snake[0][0] > width:
+    if snake[0][0] < 0 or snake[0][0] > width - 10:
         return True
-    elif snake[0][1] < 0 or snake[0][1] > height:
+    elif snake[0][1] < 0 or snake[0][1] > height - 10:
         return True
     return False
+
+def draw_wall():
+    for i in range(0, width, 10):
+        pygame.draw.rect(screen, "red", (i, 0, 10, 10))
+        pygame.draw.rect(screen, "red", (i, height-10, 10, 10))
+    for i in range(0, height, 10):
+        pygame.draw.rect(screen, "red", (0, i, 10, 10))
+        pygame.draw.rect(screen, "red", (width-10, i, 10, 10))
 
 
 def increase_snake(snake):
@@ -72,6 +80,7 @@ while running:
     screen.fill("purple")
     pygame.draw.rect(screen, "white", (snake[0][0], snake[0][1], 10, 10))
     pygame.draw.rect(screen, "green", (food[0], food[1], 10, 10))
+    draw_wall()
 
     # print(snake[0][0], snake[0][1], food[0], food[1])
     if snake[0][0] == food[0] and snake[0][1] == food[1]:
