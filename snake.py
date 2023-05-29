@@ -23,9 +23,9 @@ def food_position():
 food = food_position()
 
 def is_dead(snake):
-    if snake[0][0] < 0 or snake[0][0] > width - 10:
+    if snake[0][0] < 0 or snake[0][0] > width - 20:
         return True
-    elif snake[0][1] < 0 or snake[0][1] > height - 10:
+    elif snake[0][1] < 0 or snake[0][1] > height - 20:
         return True
     return False
 
@@ -40,10 +40,8 @@ def draw_wall():
 
 def increase_snake(snake):
     # increase the size of the snake by five blocks
-    for i in range(5):
+    for i in range(1):
         snake.append((snake[-1][0], snake[-1][1]))
-        
-    return snake
 
 
 while running:
@@ -68,29 +66,32 @@ while running:
     
     # move the snake
     if direction == "u":
-        snake[0] = (snake[0][0], snake[0][1] - 10)
+        snake.insert(0, (snake[0][0], snake[0][1] - 10))
     if direction == "d":
-        snake[0] = (snake[0][0], snake[0][1] + 10)
+        snake.insert(0, (snake[0][0], snake[0][1] + 10))
     if direction == "r":
-        snake[0] = (snake[0][0] + 10, snake[0][1])
+        snake.insert(0, (snake[0][0] + 10, snake[0][1]))
     if direction == "l":
-        snake[0] = (snake[0][0] - 10, snake[0][1])
+        snake.insert(0, (snake[0][0] - 10, snake[0][1]))
+    
+    if len(snake) > 1:
+        snake.pop()
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
-    pygame.draw.rect(screen, "white", (snake[0][0], snake[0][1], 10, 10))
+    for s in snake:
+        pygame.draw.rect(screen, "white", (s[0], s[1], 10, 10))
     pygame.draw.rect(screen, "green", (food[0], food[1], 10, 10))
     draw_wall()
 
     # print(snake[0][0], snake[0][1], food[0], food[1])
     if snake[0][0] == food[0] and snake[0][1] == food[1]:
         increase_snake(snake)
-        print("ate food")
         food = food_position()
         
     # flip() the display to put your work on screen
     pygame.display.flip()
 
-    clock.tick(10)  # limits FPS to 60
+    clock.tick(10)  # limits FPS to 10
 
 pygame.quit()
